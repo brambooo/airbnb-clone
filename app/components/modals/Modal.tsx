@@ -1,31 +1,32 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
+
 import Button from "../Button";
 
 interface ModalProps {
   isOpen?: boolean;
-  isDisabled?: boolean;
   onClose: () => void;
   onSubmit: () => void;
   title?: string;
-  actionLabel: string;
   body?: React.ReactElement;
   footer?: React.ReactElement;
+  actionLabel: string;
+  disabled?: boolean;
   secondaryAction?: () => void;
   secondaryActionLabel?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
   isOpen,
-  isDisabled,
   onClose,
   onSubmit,
   title,
-  actionLabel,
   body,
+  actionLabel,
   footer,
+  disabled,
   secondaryAction,
   secondaryActionLabel,
 }) => {
@@ -36,27 +37,35 @@ const Modal: React.FC<ModalProps> = ({
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
-    if (isDisabled) return;
+    if (disabled) {
+      return;
+    }
 
     setShowModal(false);
-
-    // We gebruiken de timeout van 300, omdat we een mooie animatie willen hebben bijde onclose.
-    setTimeout(() => onClose(), 300);
-  }, [isDisabled, onClose]);
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  }, [onClose, disabled]);
 
   const handleSubmit = useCallback(() => {
-    if (isDisabled) return;
+    if (disabled) {
+      return;
+    }
 
     onSubmit();
-  }, [isDisabled, onSubmit]);
+  }, [onSubmit, disabled]);
 
   const handleSecondaryAction = useCallback(() => {
-    if (isDisabled || !secondaryAction) return;
-
-    if (!isOpen) return null;
+    if (disabled || !secondaryAction) {
+      return;
+    }
 
     secondaryAction();
-  }, [isDisabled, isOpen, secondaryAction]);
+  }, [secondaryAction, disabled]);
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <>
@@ -159,14 +168,14 @@ const Modal: React.FC<ModalProps> = ({
                 >
                   {secondaryAction && secondaryActionLabel && (
                     <Button
-                      disabled={isDisabled}
+                      disabled={disabled}
                       label={secondaryActionLabel}
                       onClick={handleSecondaryAction}
                       outline
                     />
                   )}
                   <Button
-                    disabled={isDisabled}
+                    disabled={disabled}
                     label={actionLabel}
                     onClick={handleSubmit}
                   />
