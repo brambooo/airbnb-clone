@@ -12,6 +12,7 @@ import Button from "../Button";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import toast from "react-hot-toast";
+import { signIn } from "next-auth/react";
 import useLoginModal from "@/app/hooks/useLoginModal";
 
 const RegisterModal = () => {
@@ -98,7 +99,7 @@ const RegisterModal = () => {
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {}}
+        onClick={() => signIn("github")}
       />
       <div
         className="
