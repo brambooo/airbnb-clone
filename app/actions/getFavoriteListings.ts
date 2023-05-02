@@ -2,6 +2,8 @@ import prisma from "@/app/libs/prismadb";
 
 import getCurrentUser from "./getCurrentUser";
 
+
+// Actions gebruiken we om direct te communiceren via server component naar de db.
 export default async function getFavoriteListings() {
   try {
     const currentUser = await getCurrentUser();

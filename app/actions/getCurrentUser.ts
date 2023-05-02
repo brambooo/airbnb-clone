@@ -8,6 +8,7 @@ export async function getSession() {
   return await getServerSession(authOptions);
 }
 
+// Actions gebruiken we om direct te communiceren via server component naar de db.
 export default async function getCurrentUser() {
   try {
     const session = await getSession();
